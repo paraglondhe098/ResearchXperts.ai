@@ -6,6 +6,7 @@ from langchain_mistralai import ChatMistralAI
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.messages import HumanMessage
+from langchain_core.output_parsers import StrOutputParser
 import os
 
 
@@ -56,12 +57,13 @@ class Model:
         self.memory = MemorySaver()
         self.agent_executor = create_react_agent(self.llm, [self.search_tool], checkpointer=self.memory)
         self.config = {"configurable": {"thread_id": username}}
+        self.parser = StrOutputParser()
 
     def response(self, prompt):
         res = self.agent_executor.invoke({
             "messages": [HumanMessage(prompt)],
         }, self.config)
-        return res['messages'][-1]
+        return self.parser.invoke(input=res['messages'][-1], config=self.config)
 
     @staticmethod
     def configure_environment():
