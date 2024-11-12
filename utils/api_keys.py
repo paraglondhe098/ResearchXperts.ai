@@ -13,7 +13,7 @@ class FinalMeta(type):
 
 
 class API_Keys(metaclass=FinalMeta):
-    def __init__(self, requires_pass=True, filename="API_KEYS.pkl"):
+    def __init__(self, requires_pass=True, filename="utils/API_KEYS.pkl"):
         self.__secret_attr_00764354 = None
         self.__keys = {}
         self.__requires_pass = requires_pass
