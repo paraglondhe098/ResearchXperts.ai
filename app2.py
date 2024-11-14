@@ -1,15 +1,14 @@
 import streamlit as st
 from datetime import date, timedelta
-from utils.core import ArXivRetriever, setup_environment
+from utils.core import setup_environment
 from utils.assistants import PaperSearchAssistant, PaperAssistant
 from langchain_mistralai import ChatMistralAI
-from langchain_chroma import Chroma
 
 # Constants
 DEFAULT_MAX_RESULTS = 10
 MIN_RESULTS = 5
 MAX_RESULTS = 50
-DEFAULT_FROM_DATE = date.today() - timedelta(days=5*365)  # Last year by default
+DEFAULT_FROM_DATE = date.today() - timedelta(days=5 * 365)  # Last year by default
 
 st.set_page_config(
     page_title="Research Paper Assistant",
@@ -26,7 +25,11 @@ def initialize_session_state():
         'papers': None,
         'messages': [],
         'llm': ChatMistralAI(model="mistral-large-2402"),
-        'search_history': [],  # New: Keep track of recent searches
+        # 'search_model': ChatMistralAI(model="mistral-large-2402"),
+        # 'query_optimizer_model': ChatAI21(model="jamba-1.5-large"),
+        # 'embedding_model': HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2"),
+        # 'vectorstore' : InMemoryVectorStore
+        'search_history': [],
     }
 
     for key, value in defaults.items():
@@ -196,10 +199,7 @@ def main():
         st.header("Search Results")
 
         # Filter papers by date
-        filtered_papers = [
-            paper for paper in st.session_state.papers.papers
-            if from_date <= paper.published.date() <= to_date
-        ]
+        filtered_papers = st.session_state.papers.get_papers_by_date_range(str(from_date), str(to_date))
 
         if not filtered_papers:
             st.info("No papers found in the selected date range.")

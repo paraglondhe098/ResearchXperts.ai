@@ -14,6 +14,7 @@ def setup_environment():
     os.environ["LANGCHAIN_API_KEY"] = fetch_api_key("langsmith", False)
     os.environ["MISTRAL_API_KEY"] = fetch_api_key("mistral", False)
     os.environ["HF_TOKEN"] = fetch_api_key("HuggingFace", False)
+    os.environ["AI21_API_KEY"] = fetch_api_key("ai21", False)
 
 
 @dataclass
@@ -63,8 +64,8 @@ class PaperManager:
         return self.papers[idx]
 
     def get_papers_by_date_range(self, start_date: str, end_date: str) -> List[ResearchPaper]:
-        start = datetime.strptime(start_date, "%m-%Y")
-        end = datetime.strptime(end_date, "%m-%Y")
+        start = datetime.strptime(start_date, "%Y-%m-%d")
+        end = datetime.strptime(end_date, "%Y-%m-%d")
 
         dummy_start = ResearchPaper(
             id="", title="", category="", authors=[],
