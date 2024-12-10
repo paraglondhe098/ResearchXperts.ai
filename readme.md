@@ -3,8 +3,8 @@
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/paraglondhe098/torchtrainer.git
-    cd torchtrainer
+    git clone https://github.com/paraglondhe098/ResearchXperts.ai.git
+    cd ResearchXperts.ai
     ```
 
 2. Install the required dependencies:
